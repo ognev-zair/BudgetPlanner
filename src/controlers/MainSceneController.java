@@ -53,6 +53,8 @@ public class MainSceneController implements Initializable {
 
     @FXML
     private void onOpenWalletsClicked(ActionEvent event) {
+        WalletSceneController wsc = new WalletSceneController();
+        wsc.openListScene();
     }
 
     @FXML
