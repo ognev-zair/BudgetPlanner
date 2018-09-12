@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.ListView?>
+<?import controlers.ListViewController?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+
+<VBox  xmlns="http://javafx.com/javafx/10.0.1" 
+      xmlns:fx="http://javafx.com/fxml/1" 
+      
+       fx:controller="controlers.MainSceneController">
+
+
+    <MenuBar accessibleText="Hello" VBox.vgrow="NEVER">
+      <menus>
+          <Menu mnemonicParsing="false" text="Main">
+          <items>
+            <MenuItem mnemonicParsing="false" onAction="#onDashboardClicked" text="Dashboard" />
+  <MenuItem mnemonicParsing="false" onAction="#onLogoutClicked" text="Logout" />         
+          </items>
+        </Menu>  
+        <Menu mnemonicParsing="false" text="Wallet">
+          <items>
+            <MenuItem mnemonicParsing="false" onAction="#onNewWalletClicked" text="New Wallet" />
+            <MenuItem mnemonicParsing="false" onAction="#onOpenWalletsClicked" text="Open Wallets" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Category">
+          <items>
+            <MenuItem mnemonicParsing="false" onAction="#onNewCategoryClicked" text="New Category" />
+            <MenuItem mnemonicParsing="false" onAction="#onOpenCategoriesClicked" text="Open Categories" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Transactions">
+          <items>
+            <MenuItem mnemonicParsing="false" onAction="#onNewTransactionClicked" text="New Transaction" />
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+    
+
+    <AnchorPane 
+        id="contentPane"
+ 
+        maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+     <VBox alignment="CENTER" >
+        <children>
+<!--            
+        <Label alignment="CENTER" layoutX="161.0" layoutY="23.0" prefHeight="23.0" prefWidth="318.0" style="&#10;" text="Balance: " textAlignment="CENTER" textFill="#9f9f9f" wrapText="false">
+          <font>
+            <Font size="18.0" />
+          </font>
+        </Label>-->
+        
+        <ChoiceBox   fx:id="walletDropDown" layoutX="41.0" layoutY="66.0" prefHeight="27.0" prefWidth="194.0" />
+      </children>
+      
+           <children>
+               
+<GridPane 
+    
+    xmlns:fx="http://javafx.com/fxml" >
+
+     <ListView   fx:id="listView"/>
+  
+     
+</GridPane>
+       </children>
+     </VBox>
+    </AnchorPane>
+
+</VBox>
+

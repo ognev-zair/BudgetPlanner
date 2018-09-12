@@ -23,5 +23,6 @@ hs_err_pid*
 
 #idea
 .idea
-/nbproject/private/
-/build/
+
+#bin
+bin
