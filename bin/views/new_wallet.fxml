@@ -7,22 +7,22 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox
-    fx:controller="controlers.WalletSceneController"
-
+<VBox 
+        fx:controller="controlers.CategorySceneController"
     prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
          <children>
-            <Button layoutX="157.0" layoutY="244.0" mnemonicParsing="false" text="Save" />
-            <Label layoutX="54.0" layoutY="53.0" text="Create Wallet">
+            <Button layoutX="157.0" layoutY="200.0" mnemonicParsing="false" text="Save" />
+            <Label layoutX="41.0" layoutY="20.0" text="Create Wallet">
                <font>
-                  <Font size="21.0" />
+                  <Font size="17.0" />
                </font>
             </Label>
-            <TextField layoutX="38.0" layoutY="109.0" promptText="Name" />
-            <TextField layoutX="38.0" layoutY="158.0" promptText="Balance" />
+            <TextField layoutX="41.0" layoutY="76.0" promptText="Name" />
+            <TextField layoutX="41.0" layoutY="125.0" promptText="Balance" />
          </children>
     </AnchorPane>
   </children>
 </VBox>
+

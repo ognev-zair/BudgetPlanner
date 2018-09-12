@@ -19,7 +19,9 @@
                   <Font size="17.0" />
                </font>
             </Label>
-            <Button layoutX="162.0" layoutY="359.0" mnemonicParsing="false" text="Add Wallet" />
+            <Button 
+                id="add_wallet"
+                layoutX="162.0" layoutY="359.0" mnemonicParsing="false" text="Add Wallet" />
          </children>
     </AnchorPane>
   </children>

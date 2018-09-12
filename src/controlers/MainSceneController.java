@@ -3,19 +3,25 @@ package controlers;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.Set;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
 
@@ -24,15 +30,36 @@ public class MainSceneController implements Initializable {
     @FXML
     static AnchorPane contentPane;
     @FXML
-    private ListView listView;
+    private  static ListView listView;
     private Set<String> stringCategorySet;
     ObservableList observableCategoryList;
+    private static MainSceneController instance;
+    private static ChoiceBox choiceWalletBox;
 
     public Scene getMainScene() throws IOException {
         Parent root = FXMLLoader.load(Main.getInstance().getClass().getResource("/views/main.fxml"));
-        Scene scene = new Scene(root, 400, 500);
+        Scene scene = new Scene(root, 350, 500);
         contentPane = (AnchorPane) root.lookup("#contentPane");
 
+        listView = (ListView) root.lookup("#listView");
+          choiceWalletBox = (ChoiceBox) contentPane.lookup("#walletDropDown");
+            choiceWalletBox.setItems(FXCollections.observableArrayList(
+                    "Cash", "Tinkoff",
+                    "Bank of America", "Reserve")
+            );
+            
+            choiceWalletBox.getSelectionModel().selectFirst(); 
+            loadListView(listView);
+         
+               choiceWalletBox.getSelectionModel().selectedIndexProperty()
+                    .addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+              System.out.println("clicked on " + oldValue + " " + newValue);
+              loadListView(listView);
+            }
+        });
+            
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/main.fxml"));
         fxmlLoader.setController(this);
 
@@ -42,7 +69,10 @@ public class MainSceneController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        loadListView();
+//        loadListView(listView);
+        instance = this;
+        
+          
     }
 
     @FXML
@@ -63,6 +93,16 @@ public class MainSceneController implements Initializable {
     }
 
     @FXML
+    private void onDashboardClicked() throws IOException {
+        Main.getInstance().getStage().setScene(getMainScene());
+    }
+
+    @FXML
+    private void onLogoutClicked() throws IOException {
+        Main.getInstance().getStage().setScene(LoginSceneController.getLoginScene());
+    }
+
+    @FXML
     private void onNewCategoryClicked(ActionEvent event) {
         CategorySceneController csc = new CategorySceneController();
         csc.openCreateScene();
@@ -78,14 +118,22 @@ public class MainSceneController implements Initializable {
         tc.openCreateScene();
     }
 
-    public void loadListView() {
+    public static int getRandomBetweenRange(int min, int max){
+    int x = (int) ((Math.random()*((max-min)+1))+min);
+    return x;
+}
+    public void loadListView(ListView listView) {
         // TODO from DB
+        
+      
+         
         stringCategorySet = new HashSet<String>();
         observableCategoryList = FXCollections.observableArrayList();
-        stringCategorySet.add("String 1");
-        stringCategorySet.add("String 2");
-        stringCategorySet.add("String 3");
-        stringCategorySet.add("String 4");
+        int size = getRandomBetweenRange(5, 10);
+        for(int i = 0; i < size; i++) {
+        stringCategorySet.add("String " + i);
+        }
+    
         observableCategoryList.setAll(stringCategorySet);
         listView.setItems(observableCategoryList);
         listView.setCellFactory(new Callback<ListView<String>, javafx.scene.control.ListCell<String>>() {
@@ -94,5 +142,17 @@ public class MainSceneController implements Initializable {
                 return new ListViewCells();
             }
         });
+
+        listView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                System.out.println("clicked on " + listView.getSelectionModel().getSelectedItem());
+            }
+        });
+    }
+    
+    public static MainSceneController getInstance() {
+        return instance;
     }
 }
