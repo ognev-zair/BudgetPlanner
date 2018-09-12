@@ -21,9 +21,9 @@ public final class LoginSceneController {
 	private LoginSceneController() {}
 
 	
-	public static Scene getLoginScene(Main app) throws IOException {
+	public static Scene getLoginScene() throws IOException {
 		
-		Parent root = FXMLLoader.load(app.getClass().getResource("/views/authorization.fxml"));
+		Parent root = FXMLLoader.load(Main.getInstance().getClass().getResource("/views/authorization.fxml"));
 		Scene scene = new Scene(root, 400, 500);
 		
 		Text target = (Text) root.lookup("#actiontarget");
@@ -39,11 +39,13 @@ public final class LoginSceneController {
 
 			@Override
 			public void handle(ActionEvent e) {
+                            
+                            // TODO register/login user
                             try {
                                 target.setFill(Color.FIREBRICK);
                                 target.setText("Sign in button pressed");
                                 
-                                app.getStage().setScene(new MainSceneController().getMainScene());
+                                Main.getInstance().getStage().setScene(new MainSceneController().getMainScene());
                             } catch (IOException ex) {
                                 Logger.getLogger(LoginSceneController.class.getName()).log(Level.SEVERE, null, ex);
                             }

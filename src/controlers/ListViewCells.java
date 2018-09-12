@@ -20,4 +20,7 @@ public class ListViewCells extends ListCell<String>
             setGraphic(data.getBox());
         }
     }
+    
+    
+    
 }

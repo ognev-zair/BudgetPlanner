@@ -13,9 +13,7 @@
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
-            <Button 
-                id="save"
-                layoutX="166.0" layoutY="359.0" mnemonicParsing="false" text="Save" />
+            <Button layoutX="166.0" layoutY="359.0" mnemonicParsing="false" text="Save" />
             <ChoiceBox fx:id="categoryDropDown" layoutX="41.0" layoutY="66.0" prefHeight="27.0" prefWidth="194.0" />
             <TextField layoutX="41.0" layoutY="172.0" prefHeight="28.0" prefWidth="194.0" />
             <TextArea layoutX="41.0" layoutY="236.0" prefHeight="105.0" prefWidth="194.0" />

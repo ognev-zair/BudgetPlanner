@@ -5,9 +5,6 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.layout.GridPane?>
@@ -22,18 +19,12 @@
 
 <VBox  xmlns="http://javafx.com/javafx/10.0.1" 
       xmlns:fx="http://javafx.com/fxml/1" 
-      
        fx:controller="controlers.MainSceneController">
+    
 
-
+  <children>
     <MenuBar accessibleText="Hello" VBox.vgrow="NEVER">
       <menus>
-          <Menu mnemonicParsing="false" text="Main">
-          <items>
-            <MenuItem mnemonicParsing="false" onAction="#onDashboardClicked" text="Dashboard" />
-  <MenuItem mnemonicParsing="false" onAction="#onLogoutClicked" text="Logout" />         
-          </items>
-        </Menu>  
         <Menu mnemonicParsing="false" text="Wallet">
           <items>
             <MenuItem mnemonicParsing="false" onAction="#onNewWalletClicked" text="New Wallet" />
@@ -53,22 +44,18 @@
         </Menu>
       </menus>
     </MenuBar>
-    
-
     <AnchorPane 
         id="contentPane"
- 
+   
         maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
-     <VBox alignment="CENTER" >
+     <VBox>
         <children>
-<!--            
+            
         <Label alignment="CENTER" layoutX="161.0" layoutY="23.0" prefHeight="23.0" prefWidth="318.0" style="&#10;" text="Balance: " textAlignment="CENTER" textFill="#9f9f9f" wrapText="false">
           <font>
             <Font size="18.0" />
           </font>
-        </Label>-->
-        
-        <ChoiceBox   fx:id="walletDropDown" layoutX="41.0" layoutY="66.0" prefHeight="27.0" prefWidth="194.0" />
+        </Label>
       </children>
       
            <children>
@@ -77,13 +64,13 @@
     
     xmlns:fx="http://javafx.com/fxml" >
 
-     <ListView   fx:id="listView"/>
+     <ListView fx:id="listView"/>
   
      
 </GridPane>
        </children>
      </VBox>
     </AnchorPane>
-
+  </children>
 </VBox>
 

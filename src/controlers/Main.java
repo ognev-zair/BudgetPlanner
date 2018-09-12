@@ -46,7 +46,7 @@ public class Main extends Application {
 		this.primaryStage = primaryStage;
 		primaryStage.setTitle("Budget Planner");
 
-		primaryStage.setScene(LoginSceneController.getLoginScene(this));
+		primaryStage.setScene(LoginSceneController.getLoginScene());
 
 		primaryStage.show();
 	}
