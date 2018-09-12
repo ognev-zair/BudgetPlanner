@@ -12,30 +12,34 @@ public class Wallet {
     private int id;
     private String name;
     private int user_id;
-    private Account owner;
+    private User owner;
     private double balance;
-
 
     Wallet() {}
 
-    Wallet(int id, String name, Account user, Double initialBalance) {
+    Wallet(int id, String name, User user, Double initialBalance) {
+        this.id = id;
         this.name = name;
         this.balance = initialBalance;
         this.user_id = user.getId();
     }
 
-    public Account getAccount() {
+    public int getId() {
+        return id;
+    }
+
+    public User getAccount() {
         return owner;
     }
 
-    public static ArrayList<Wallet> getAccountWallets(Account user) {
+    public static ArrayList<Wallet> getAccountWallets(User user) {
         ArrayList<Wallet> wallets = new ArrayList<>();
-        ConnectionClass connectionClass=new ConnectionClass();
+        ConnectionClass connectionClass = new ConnectionClass();
         Connection connection=connectionClass.getConnection();
 
         try {
             Statement statement=connection.createStatement();
-            String sql="SELECT * FROM wallet WHERE user_id = '" + user.getId();
+            String sql="SELECT * FROM wallet WHERE user_id = '" + user.getId() + "'";
             ResultSet resultSet=statement.executeQuery(sql);
 
             if (resultSet.next()){
@@ -45,6 +49,18 @@ public class Wallet {
             e.printStackTrace();
         }
         return wallets;
+    }
+
+    public static void createWallet(String name, User user, Double initialBalance) {
+        ConnectionClass connectionClass = new ConnectionClass();
+        Connection connection = connectionClass.getConnection();
+        try {
+            Statement statement = connection.createStatement();
+            String sql = "INSERT INTO wallet (name, user_id, balance) VALUES ('" + name + "', " + user.getId() + ", " + initialBalance + ");";
+            statement.execute(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

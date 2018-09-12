@@ -6,23 +6,26 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class Account implements Model {
+public class User implements Model {
     private String tableName = "user";
     private String[] attributes = {"id", "name", "password_hash"};
     private int id;
     private String name;
     private String password_hash;
+    private String email;
 
-    Account() {}
+    User() {}
 
-    Account(int id, String username) {
+    User(int id, String username, String email) {
         this.id = id;
         this.name = username;
+        this.email = email;
     }
 
-    Account(int id, String username, String password) {
+    User(int id, String username, String email, String password) {
         this.id = id;
         this.name = username;
+        this.email = email;
         this.password_hash = this.getPasswordHash(password);
     }
 
@@ -34,18 +37,23 @@ public class Account implements Model {
         return Wallet.getAccountWallets(this);
     }
 
-    public static Account login(String login, String password) {
-        Account user = new Account();
+    public static User login(String email, String password) {
+        User user = new User();
         ConnectionClass connectionClass=new ConnectionClass();
         Connection connection=connectionClass.getConnection();
+        String password_hash = User.getPasswordHash(password);
 
         try {
             Statement statement=connection.createStatement();
-            String sql="SELECT * FROM user WHERE name = '" + login + "' AND password_hash = '" + Account.getPasswordHash(password) + "' LIMIT 1;";
+            String sql="SELECT * FROM user WHERE email = '" + email + "' AND password_hash = '" + password_hash + "' LIMIT 1;";
             ResultSet resultSet=statement.executeQuery(sql);
 
             if (resultSet.next()){
-                user = new Account(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("password_hash"));
+                user = new User(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("email"),
+                        resultSet.getString("password_hash"));
             } else {
                 user = null;
             }
@@ -55,25 +63,18 @@ public class Account implements Model {
         return user;
     }
 
-    public static Account register(String login, String password) {
-        Account user = new Account();
+    public static void register(String name, String email, String password) {
         ConnectionClass connectionClass=new ConnectionClass();
         Connection connection=connectionClass.getConnection();
+        String password_hash = User.getPasswordHash(password);
 
         try {
-            Statement statement=connection.createStatement();
-            String sql="SELECT * FROM user WHERE name = '" + login + "' AND password_hash = '" + Account.getPasswordHash(password) + "' LIMIT 1;";
-            ResultSet resultSet=statement.executeQuery(sql);
-
-            if (resultSet.next()){
-                user = new Account(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("password_hash"));
-            } else {
-                user = null;
-            }
+            Statement statement = connection.createStatement();
+            String sql = "INSERT INTO user (name, email, password_hash) VALUES ('" + name + "', '" + email + "', '" + password_hash + "');";
+            statement.execute(sql);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return user;
     }
 
     public static String getPasswordHash(String password) {
@@ -89,4 +90,5 @@ public class Account implements Model {
         }
         return null;
     }
+
 }
