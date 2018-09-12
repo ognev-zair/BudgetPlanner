@@ -124,9 +124,7 @@ public class MainSceneController implements Initializable {
 }
     public void loadListView(ListView listView) {
         // TODO from DB
-        
-      
-         
+   
         stringCategorySet = new HashSet<String>();
         observableCategoryList = FXCollections.observableArrayList();
         int size = getRandomBetweenRange(5, 10);

@@ -24,11 +24,11 @@ public final class LoginSceneController {
 	public static Scene getLoginScene() throws IOException {
 		
 		Parent root = FXMLLoader.load(Main.getInstance().getClass().getResource("/views/authorization.fxml"));
-		Scene scene = new Scene(root, 400, 500);
+		Scene scene = new Scene(root, 350, 500);
 		
 		Text target = (Text) root.lookup("#actiontarget");
 
-		TextField name = (TextField) root.lookup("#name");
+		TextField name = (TextField) root.lookup("#email");
 		
 		TextField password = (TextField) root.lookup("#password");
 		name.setPromptText("Name");
