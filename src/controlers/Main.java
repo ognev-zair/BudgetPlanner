@@ -33,44 +33,30 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Main extends Application {
+	private Stage primaryStage;
+        private static Main instance;
 	
-	
-
 	public static void main(String[] args) {
 		launch(args);
 	}
 
 	@Override
 	public void start(Stage primaryStage) throws IOException {
+            this.instance = this;
+		this.primaryStage = primaryStage;
 		primaryStage.setTitle("Budget Planner");
-		
-		Parent root = FXMLLoader.load(getClass().getResource("/views/main.fxml"));
-		Scene scene = new Scene(root, 500, 600);
-		
-		
-	
-		primaryStage.setScene(scene);
 
-		Text target = (Text) root.lookup("#actiontarget");
-
-		TextField name = (TextField) root.lookup("#name");
-		
-		TextField password = (TextField) root.lookup("#password");
-		name.setPromptText("Name");
-		password.setPromptText("Password");
-		
-		Button button = (Button) root.lookup("#button");
-		button.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent e) {
-				target.setFill(Color.FIREBRICK);
-				target.setText("Sign in button pressed");
-			}
-		});
+		primaryStage.setScene(LoginSceneController.getLoginScene(this));
 
 		primaryStage.show();
-
+	}
+	
+	public Stage getStage() {
+		return primaryStage;
 	}
 
+        
+        public static Main getInstance() {
+            return instance;
+        }
 }

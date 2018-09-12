@@ -46,7 +46,6 @@
     </MenuBar>
     <AnchorPane 
         id="contentPane"
-   
         maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
      <VBox>
         <children>
@@ -61,9 +60,12 @@
            <children>
                
 <GridPane 
-    
-    xmlns:fx="http://javafx.com/fxml" >
-
+    xmlns:fx="http://javafx.com/fxml" 
+ 
+    >
+   GridPane.containerLevel02 Label.leftIndent {
+    -fx-padding-left: 20;
+}
      <ListView fx:id="listView"/>
   
      
