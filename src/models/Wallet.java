@@ -71,4 +71,16 @@ public class Wallet {
         }
     }
 
+    public void save() {
+        ConnectionClass connectionClass = new ConnectionClass();
+        Connection connection = connectionClass.getConnection();
+        try {
+            Statement statement = connection.createStatement();
+            String sql = "UPDATE wallet SET balance = " + this.balance + " WHERE id = " + this.id + ";";
+            statement.execute(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
