@@ -16,10 +16,10 @@
             <Button 
                 id="save"
                 layoutX="166.0" layoutY="359.0" mnemonicParsing="false" text="Save" />
-            <ChoiceBox fx:id="categoryDropDown" layoutX="41.0" layoutY="66.0" prefHeight="27.0" prefWidth="194.0" />
-            <TextField layoutX="41.0" layoutY="172.0" prefHeight="28.0" prefWidth="194.0" />
-            <TextArea layoutX="41.0" layoutY="236.0" prefHeight="105.0" prefWidth="194.0" />
-            <ChoiceBox fx:id="categoryDropDown1" layoutX="41.0" layoutY="118.0" prefHeight="27.0" prefWidth="194.0" />
+            <ChoiceBox fx:id="walletDropDown" layoutX="41.0" layoutY="66.0" prefHeight="27.0" prefWidth="194.0" />
+            <TextField id="price" layoutX="41.0" layoutY="172.0" prefHeight="28.0" prefWidth="194.0" />
+            <TextArea id="description" layoutX="41.0" layoutY="236.0" prefHeight="105.0" prefWidth="194.0" />
+            <ChoiceBox fx:id="categoryDropDown" layoutX="41.0" layoutY="118.0" prefHeight="27.0" prefWidth="194.0" />
             <Label layoutX="41.0" layoutY="49.0" text="Wallet:" />
             <Label layoutX="41.0" layoutY="101.0" text="Category:" />
             <Label layoutX="41.0" layoutY="155.0" text="Price:" />
