@@ -25,6 +25,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
+import models.Category;
 import models.User;
 import models.Wallet;
 
@@ -138,9 +139,11 @@ public class MainSceneController implements Initializable {
         
         stringCategorySet = new HashSet<String>();
         observableCategoryList = FXCollections.observableArrayList();
-        int size = getRandomBetweenRange(5, 10);
-        for(int i = 0; i < size; i++) {
-        stringCategorySet.add("String " + i);
+        List<Category> categories = Category.getWalletCategories(Main.getUser(), wallet);
+        
+
+        for(Category category: categories) {
+        stringCategorySet.add(category.getName() + ": $" + category.getTotalAmount());
         }
     
         observableCategoryList.setAll(stringCategorySet);
