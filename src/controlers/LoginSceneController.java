@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import models.User;
 
 public final class LoginSceneController {
 	
@@ -41,6 +42,17 @@ public final class LoginSceneController {
 			public void handle(ActionEvent e) {
                             
                             // TODO register/login user
+                            
+                            User user = User.login(name.getText(), password.getText());
+                            if(user == null) {
+                                User.register(name.getText(), name.getText(), password.getText());
+                                user = User.login(name.getText(), password.getText());
+                               
+                            } 
+                            
+                             Main.setUser(user);
+                             
+                       
                             try {
                                 target.setFill(Color.FIREBRICK);
                                 target.setText("Sign in button pressed");

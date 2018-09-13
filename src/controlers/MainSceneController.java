@@ -3,6 +3,7 @@ package controlers;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -24,6 +25,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
+import models.User;
+import models.Wallet;
 
 public class MainSceneController implements Initializable {
 
@@ -43,20 +46,23 @@ public class MainSceneController implements Initializable {
 
         listView = (ListView) root.lookup("#listView");
           choiceWalletBox = (ChoiceBox) contentPane.lookup("#walletDropDown");
-            choiceWalletBox.setItems(FXCollections.observableArrayList(
-                    "Cash", "Tinkoff",
-                    "Bank of America", "Reserve")
-            );
+          List<Wallet> wallets = Main.getUser().getWallets();
+          String[] strWallets = new String[wallets.size()];
+          for(int i = 0; i < wallets.size(); i++) {
+              strWallets[i] = wallets.get(i).getName() + ": " + wallets.get(i).getBalance();
+          }
+            choiceWalletBox.setItems(FXCollections.observableArrayList(strWallets));
             
             choiceWalletBox.getSelectionModel().selectFirst(); 
-            loadListView(listView);
+            if(wallets.size() > 0)
+            loadListView(listView, wallets.get(0));
          
                choiceWalletBox.getSelectionModel().selectedIndexProperty()
                     .addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
               System.out.println("clicked on " + oldValue + " " + newValue);
-              loadListView(listView);
+              loadListView(listView, wallets.get(newValue.intValue()));
             }
         });
             
@@ -99,6 +105,7 @@ public class MainSceneController implements Initializable {
 
     @FXML
     private void onLogoutClicked() throws IOException {
+        Main.setUser(null);
         Main.getInstance().getStage().setScene(LoginSceneController.getLoginScene());
     }
 
@@ -110,6 +117,8 @@ public class MainSceneController implements Initializable {
 
     @FXML
     private void onOpenCategoriesClicked(ActionEvent event) {
+          CategorySceneController csc = new CategorySceneController();
+        csc.openListScene();
     }
 
     @FXML
@@ -122,9 +131,11 @@ public class MainSceneController implements Initializable {
     int x = (int) ((Math.random()*((max-min)+1))+min);
     return x;
 }
-    public void loadListView(ListView listView) {
+    public void loadListView(ListView listView, Wallet wallet) {
         // TODO from DB
    
+        User user = Main.getUser();
+        
         stringCategorySet = new HashSet<String>();
         observableCategoryList = FXCollections.observableArrayList();
         int size = getRandomBetweenRange(5, 10);

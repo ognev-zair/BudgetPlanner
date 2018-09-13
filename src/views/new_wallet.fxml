@@ -21,8 +21,8 @@
                   <Font size="17.0" />
                </font>
             </Label>
-            <TextField layoutX="41.0" layoutY="76.0" promptText="Name" />
-            <TextField layoutX="41.0" layoutY="125.0" promptText="Balance" />
+            <TextField id="name" layoutX="41.0" layoutY="76.0" promptText="Name" />
+            <TextField id="balance" layoutX="41.0" layoutY="125.0" promptText="Balance" />
          </children>
     </AnchorPane>
   </children>

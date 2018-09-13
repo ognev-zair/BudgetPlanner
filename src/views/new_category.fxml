@@ -14,7 +14,7 @@ fx:controller="controlers.CategorySceneController"
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
-            <TextField layoutX="41.0" layoutY="67.0" promptText="Name" />
+            <TextField id="name" layoutX="41.0" layoutY="67.0" promptText="Name" />
             <Label layoutX="41.0" layoutY="20.0" text="Create new Category">
                <font>
                   <Font size="17.0" />
@@ -22,7 +22,9 @@ fx:controller="controlers.CategorySceneController"
             </Label>
             <Label layoutX="41.0" layoutY="105.0" text="Type:" />
             <ChoiceBox id="categoryDropDown" layoutX="41.0" layoutY="130.0" prefHeight="27.0" prefWidth="167.0" />
-            <Button layoutX="132.0" layoutY="215.0" mnemonicParsing="false" text="Save" />
+            <Button 
+                id="save"
+                layoutX="132.0" layoutY="215.0" mnemonicParsing="false" text="Save" />
       </children>
     </AnchorPane>
   </children>

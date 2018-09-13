@@ -57,13 +57,13 @@ public class Transaction {
         return transactions;
     }
 
-    public static void createTransaction(Category category, Wallet wallet, double amount, Date date, String description) {
+    public static void createTransaction(Category category, Wallet wallet, double amount, String date, String description) {
         ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = connectionClass.getConnection();
         try {
             Statement statement = connection.createStatement();
             String sql = "INSERT INTO transaction (category_id, wallet_id, amount, date, description) " +
-                    "VALUES (" + category.getId() + ", " + wallet.getId() + ", " + amount + ", '" + date.toString() + "', '" + description + "');";
+                    "VALUES (" + category.getId() + ", " + wallet.getId() + ", " + amount + ", '" + date + "', '" + description + "');";
             statement.execute(sql);
         } catch (SQLException e) {
             e.printStackTrace();

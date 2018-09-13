@@ -31,32 +31,46 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import models.User;
 
 public class Main extends Application {
-	private Stage primaryStage;
-        private static Main instance;
-	
-	public static void main(String[] args) {
-		launch(args);
-	}
 
-	@Override
-	public void start(Stage primaryStage) throws IOException {
-            this.instance = this;
-		this.primaryStage = primaryStage;
-		primaryStage.setTitle("Budget Planner");
+    private Stage primaryStage;
+    private static Main instance;
+    private static User user;
 
-		primaryStage.setScene(LoginSceneController.getLoginScene());
+    public static void main(String[] args) {
+        launch(args);
+    }
 
-		primaryStage.show();
-	}
-	
-	public Stage getStage() {
-		return primaryStage;
-	}
+    @Override
+    public void start(Stage primaryStage) throws IOException {
+        this.instance = this;
+        this.primaryStage = primaryStage;
+        primaryStage.setTitle("Budget Planner");
 
-        
-        public static Main getInstance() {
-            return instance;
+        if (user == null) {
+            primaryStage.setScene(LoginSceneController.getLoginScene());
+        } else {
+            primaryStage.setScene(new MainSceneController().getMainScene());
         }
+        
+        primaryStage.show();
+    }
+
+    public Stage getStage() {
+        return primaryStage;
+    }
+
+    public static Main getInstance() {
+        return instance;
+    }
+
+    public static void setUser(User user) {
+        Main.user = user;
+    }
+
+    public static User getUser() {
+        return user;
+    }
 }

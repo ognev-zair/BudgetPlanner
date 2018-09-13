@@ -37,8 +37,16 @@ public class Category {
     public int getId() {
         return id;
     }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getType() {
+        return type;
+    }
 
-    public ArrayList<Category> getUserCategories(User owner) {
+    public static ArrayList<Category> getUserCategories(User owner) {
         ArrayList<Category> categories = new ArrayList<>();
         ConnectionClass connectionClass = new ConnectionClass();
         Connection connection=connectionClass.getConnection();
@@ -48,7 +56,7 @@ public class Category {
             String sql="SELECT * FROM category WHERE user_id = '" + owner.getId() + "'";
             ResultSet resultSet=statement.executeQuery(sql);
 
-            if (resultSet.next()){
+            while (resultSet.next()){
                 categories.add(new Category(
                         resultSet.getInt("id"),
                         resultSet.getString("name"),

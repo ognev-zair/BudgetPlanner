@@ -31,7 +31,15 @@ public class Wallet {
     public User getAccount() {
         return owner;
     }
+    
+    public String getName() {
+        return name;
+    }
 
+    public double getBalance() {
+        return balance;
+    }
+    
     public static ArrayList<Wallet> getAccountWallets(User user) {
         ArrayList<Wallet> wallets = new ArrayList<>();
         ConnectionClass connectionClass = new ConnectionClass();
