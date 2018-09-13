@@ -2,6 +2,7 @@ package controlers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -34,11 +35,13 @@ public class MainSceneController implements Initializable {
     @FXML
     static AnchorPane contentPane;
     @FXML
-    private  static ListView listView;
-    private Set<String> stringCategorySet;
+    private static ListView listView;
+    private List<String> stringCategorySet;
     ObservableList observableCategoryList;
     private static MainSceneController instance;
     private static ChoiceBox choiceWalletBox;
+    private static Category selectedCategory;
+    private static Wallet selectedWallet;
 
     public Scene getMainScene() throws IOException {
         Parent root = FXMLLoader.load(Main.getInstance().getClass().getResource("/views/main.fxml"));
@@ -46,27 +49,28 @@ public class MainSceneController implements Initializable {
         contentPane = (AnchorPane) root.lookup("#contentPane");
 
         listView = (ListView) root.lookup("#listView");
-          choiceWalletBox = (ChoiceBox) contentPane.lookup("#walletDropDown");
-          List<Wallet> wallets = Main.getUser().getWallets();
-          String[] strWallets = new String[wallets.size()];
-          for(int i = 0; i < wallets.size(); i++) {
-              strWallets[i] = wallets.get(i).getName() + ": " + wallets.get(i).getBalance();
-          }
-            choiceWalletBox.setItems(FXCollections.observableArrayList(strWallets));
-            
-            choiceWalletBox.getSelectionModel().selectFirst(); 
-            if(wallets.size() > 0)
+        choiceWalletBox = (ChoiceBox) contentPane.lookup("#walletDropDown");
+        List<Wallet> wallets = Main.getUser().getWallets();
+        String[] strWallets = new String[wallets.size()];
+        for (int i = 0; i < wallets.size(); i++) {
+            strWallets[i] = wallets.get(i).getName() + ": " + wallets.get(i).getBalance();
+        }
+        choiceWalletBox.setItems(FXCollections.observableArrayList(strWallets));
+
+        choiceWalletBox.getSelectionModel().selectFirst();
+        if (wallets.size() > 0) {
             loadListView(listView, wallets.get(0));
-         
-               choiceWalletBox.getSelectionModel().selectedIndexProperty()
-                    .addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-              System.out.println("clicked on " + oldValue + " " + newValue);
-              loadListView(listView, wallets.get(newValue.intValue()));
-            }
-        });
-            
+        }
+
+        choiceWalletBox.getSelectionModel().selectedIndexProperty()
+                .addListener(new ChangeListener<Number>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                        System.out.println("clicked on " + oldValue + " " + newValue);
+                        loadListView(listView, wallets.get(newValue.intValue()));
+                    }
+                });
+
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/main.fxml"));
         fxmlLoader.setController(this);
 
@@ -78,8 +82,7 @@ public class MainSceneController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 //        loadListView(listView);
         instance = this;
-        
-          
+
     }
 
     @FXML
@@ -118,7 +121,7 @@ public class MainSceneController implements Initializable {
 
     @FXML
     private void onOpenCategoriesClicked(ActionEvent event) {
-          CategorySceneController csc = new CategorySceneController();
+        CategorySceneController csc = new CategorySceneController();
         csc.openListScene();
     }
 
@@ -128,43 +131,78 @@ public class MainSceneController implements Initializable {
         tc.openCreateScene();
     }
 
-    public static int getRandomBetweenRange(int min, int max){
-    int x = (int) ((Math.random()*((max-min)+1))+min);
-    return x;
-}
+    public static int getRandomBetweenRange(int min, int max) {
+        int x = (int) ((Math.random() * ((max - min) + 1)) + min);
+        return x;
+    }
+
     public void loadListView(ListView listView, Wallet wallet) {
         // TODO from DB
-   
+
         User user = Main.getUser();
-        
-        stringCategorySet = new HashSet<String>();
+
+        stringCategorySet = new ArrayList<String>();
+//        List<String> names = new ArrayList<String>();
         observableCategoryList = FXCollections.observableArrayList();
         List<Category> categories = Category.getWalletCategories(Main.getUser(), wallet);
-        
 
-        for(Category category: categories) {
-        stringCategorySet.add(category.getName() + ": $" + category.getTotalAmount());
+        for (int i = 0; i < categories.size(); i++) {
+//            names.add(category.getName());
+            stringCategorySet.add(categories.get(i).getName() + ": $" + categories.get(i).getTotalAmount() + " (" + categories.get(i).getTCount() + ")");
         }
-    
+
         observableCategoryList.setAll(stringCategorySet);
         listView.setItems(observableCategoryList);
         listView.setCellFactory(new Callback<ListView<String>, javafx.scene.control.ListCell<String>>() {
             @Override
             public ListCell<String> call(ListView<String> listView) {
-                return new ListViewCells();
+                ListViewCells cl = new ListViewCells();
+
+//              cl.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//                  @Override
+//                  public void handle(MouseEvent event) {
+//                     
+//                  }
+//              });
+                return cl;
             }
         });
 
-        listView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        listView.getSelectionModel().selectedItemProperty()
+                .addListener(new ChangeListener() {
+                    @Override
+                    public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                        Category category = categories.get(listView.getSelectionModel().getSelectedIndex());
+                        setSelectedCategory(category);
+                        setSelectedWallet(wallet);
+                        TransactionSceneController tc = new TransactionSceneController();
+                        tc.openListScene();
+                        System.out.println("clicked on " + listView.getSelectionModel().getSelectedIndex()+  " "+ category.getName() + ", wallet_id: " + wallet.getId() + ", category_id: " + category.getId());
 
-            @Override
-            public void handle(MouseEvent event) {
-                System.out.println("clicked on " + listView.getSelectionModel().getSelectedItem());
-            }
-        });
+                    }
+                });
+
+   
     }
-    
+
     public static MainSceneController getInstance() {
         return instance;
     }
+
+    public static void setSelectedCategory(Category category) {
+        MainSceneController.selectedCategory = category;
+    }
+
+    public static Category getSelectedCategory() {
+        return selectedCategory;
+    }
+
+    public static void setSelectedWallet(Wallet wallet) {
+        MainSceneController.selectedWallet = wallet;
+    }
+
+    public static Wallet getSelectedWallet() {
+        return selectedWallet;
+    }
+
 }

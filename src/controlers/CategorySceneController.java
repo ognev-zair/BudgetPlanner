@@ -62,7 +62,7 @@ public class CategorySceneController implements BaseController {
             });
             
             choiceBox.setItems(FXCollections.observableArrayList(
-                    "Income", "Expense")
+                    Category.TYPE_INCOME, Category.TYPE_EXPENCE)
             );
             contentPane.getChildren().add(newTransactionPane);
         } catch (IOException ex) {

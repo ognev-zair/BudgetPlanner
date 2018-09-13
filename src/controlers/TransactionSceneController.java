@@ -38,6 +38,7 @@ import models.Wallet;
  * @author ognev
  */
 public class TransactionSceneController implements BaseController {
+
     @FXML
     private ListView listView;
     private ChoiceBox choiceWalletBox;
@@ -46,7 +47,8 @@ public class TransactionSceneController implements BaseController {
     List<Wallet> wallets;
     ObservableList observableWalletList = FXCollections.observableArrayList();
     ObservableList observableCategorytList = FXCollections.observableArrayList();
-ObservableList observableTransactionList;
+    ObservableList observableTransactionList;
+
     @Override
     public void openCreateScene() {
         try {
@@ -60,12 +62,20 @@ ObservableList observableTransactionList;
             save.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                      SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-dd");
-   
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-dd");
+                    double sum = Double.parseDouble(price.getText());
+
+                    Wallet wallet = wallets.get(choiceWalletBox.getSelectionModel().getSelectedIndex());
+                    Category category = categories.get(choiceCategoryBox.getSelectionModel().getSelectedIndex());
+                    wallet.setBalance(Category.TYPE_EXPENCE.equals(category.getType())
+                            ? wallet.getBalance() - sum : wallet.getBalance() + sum);
+                    wallet.save();
+
                     Transaction.createTransaction(
-                            categories.get(choiceCategoryBox.getSelectionModel().getSelectedIndex()),
-                             wallets.get(choiceWalletBox.getSelectionModel().getSelectedIndex()), 
-                             Double.parseDouble(price.getText()), simpleDateFormat.format(new Date()), desc.getText());
+                            category,
+                            wallet,
+                            sum, simpleDateFormat.format(new Date()), desc.getText());
+
                     try {
                         Main.getInstance().getStage().setScene(MainSceneController.getInstance().getMainScene());
                     } catch (IOException ex) {
@@ -100,52 +110,52 @@ ObservableList observableTransactionList;
 
     @Override
     public void openListScene() {
-//       try {
-//            VBox vbox = FXMLLoader.load(Main.getInstance().getClass().getResource("/views/wallet_list.fxml"));
-//            // contentPane.getChildren().remove(0);
-//            contentPane.getChildren().clear();
-//            AnchorPane ap = (AnchorPane) vbox.getChildren().get(0);
-//            this.listView = (ListView) ap.lookup("#list");
-//            Button addWallet = (Button) ap.lookup("#add_wallet");
-//            addWallet.setText("Add transaction");
-//                  this.listView = (ListView) ap.lookup("#list");
-//            addWallet.setOnAction(new EventHandler<ActionEvent>() {
-//                @Override
-//                public void handle(ActionEvent event) {
-//                    openCreateScene();
-//                    //To change body of generated methods, choose Tools | Templates.
-//                }
-//            });
-////            choiceCategoryBox = (ChoiceBox) ap.lookup("#categoryDropDown");
-////            choiceCategoryBox.setItems(FXCollections.observableArrayList(
-////                    "Restaurants", "Amazon",
-////                    "Car Service", "Fast Food")
-////            );
-//            contentPane.getChildren().add(vbox);
-//            loadListView();
-//        } catch (IOException ex) {
-//            Logger.getLogger(TransactionSceneController.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+       try {
+            VBox vbox = FXMLLoader.load(Main.getInstance().getClass().getResource("/views/transactions.fxml"));
+            // contentPane.getChildren().remove(0);
+            contentPane.getChildren().clear();
+            AnchorPane ap = (AnchorPane) vbox.getChildren().get(0);
+            this.listView = (ListView) ap.lookup("#list");
+            Button addWallet = (Button) ap.lookup("#add");
+                
+            addWallet.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    openCreateScene();
+                    //To change body of generated methods, choose Tools | Templates.
+                }
+            });
+//            choiceCategoryBox = (ChoiceBox) ap.lookup("#categoryDropDown");
+//            choiceCategoryBox.setItems(FXCollections.observableArrayList(
+//                    "Restaurants", "Amazon",
+//                    "Car Service", "Fast Food")
+//            );
+            contentPane.getChildren().add(vbox);
+            loadListView();
+        } catch (IOException ex) {
+            Logger.getLogger(TransactionSceneController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-//    public void loadListView() {
-//        // TODO from DB
-//        HashSet<String> stringTransactionSet = new HashSet<String>();
-//        observableTransactionList = FXCollections.observableArrayList();
-//        List<Transaction> transactions = Transaction.getTransactions(Main.getUser());
-//
-//        for (Wallet wallet : wallets) {
-//            stringTransactionSet.add(wallet.getName() + ": " + wallet.getBalance());
-//        }
-//
-//        observableTransactionList.setAll(stringTransactionSet);
-//        listView.setItems(observableWalletList);
-//        listView.setCellFactory(new Callback<ListView<String>, javafx.scene.control.ListCell<String>>() {
-//            @Override
-//            public ListCell<String> call(ListView<String> listView) {
-//                return new ListViewCells();
-//            }
-//        });
-//    }
+    public void loadListView() {
+        // TODO from DB
+        HashSet<String> stringTransactionSet = new HashSet<String>();
+        observableTransactionList = FXCollections.observableArrayList();
+        List<Transaction> transactions = Transaction.getTransactions(MainSceneController.getSelectedCategory(), 
+                MainSceneController.getSelectedWallet());
 
+        for (Transaction transaction : transactions) {
+            stringTransactionSet.add(transaction.getCategory().getName() + "\n " + "Amount: $" + transaction.getAmount()
+                    + "\n" + transaction.getDescription());
+        }
+
+        observableTransactionList.setAll(stringTransactionSet);
+        listView.setItems(observableTransactionList);
+        listView.setCellFactory(new Callback<ListView<String>, javafx.scene.control.ListCell<String>>() {
+            @Override
+            public ListCell<String> call(ListView<String> listView) {
+                return new ListViewCells();
+            }
+        });
+    }
 }

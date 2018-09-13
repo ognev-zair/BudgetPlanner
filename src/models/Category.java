@@ -7,17 +7,20 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class Category {
+
     private int id;
     private String name;
     private int sort_order;
     private String type;
     private User owner;
     private double totalAmount;
+    private int tcount;
 
-    private static final String TYPE_EXPENCE = "expence";
-    private static final String TYPE_INCOME = "income";
+    public static final String TYPE_EXPENCE = "expence";
+    public static final String TYPE_INCOME = "income";
 
-    Category() {}
+    Category() {
+    }
 
     Category(int id, String name, User owner) {
         this.id = id;
@@ -34,11 +37,12 @@ public class Category {
         this.type = type;
         this.owner = owner;
     }
-    
-    Category(int id, String name, String type, double totalAmount, User owner) {
+
+    Category(int id, String name, String type, double totalAmount, int tcount, User owner) {
         this.id = id;
         this.name = name;
         this.totalAmount = totalAmount;
+        this.tcount = tcount;
         this.sort_order = id;
         this.type = type;
         this.owner = owner;
@@ -47,30 +51,34 @@ public class Category {
     public int getId() {
         return id;
     }
-    
+
     public String getName() {
         return name;
     }
-    
+
     public String getType() {
         return type;
     }
-    
+
     public double getTotalAmount() {
         return totalAmount;
+    }
+    
+      public int getTCount() {
+        return tcount;
     }
 
     public static ArrayList<Category> getUserCategories(User owner) {
         ArrayList<Category> categories = new ArrayList<>();
         ConnectionClass connectionClass = new ConnectionClass();
-        Connection connection=connectionClass.getConnection();
+        Connection connection = connectionClass.getConnection();
 
         try {
-            Statement statement=connection.createStatement();
-            String sql="SELECT * FROM category WHERE user_id = '" + owner.getId() + "'";
-            ResultSet resultSet=statement.executeQuery(sql);
+            Statement statement = connection.createStatement();
+            String sql = "SELECT * FROM category WHERE user_id = '" + owner.getId() + "'";
+            ResultSet resultSet = statement.executeQuery(sql);
 
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 categories.add(new Category(
                         resultSet.getInt("id"),
                         resultSet.getString("name"),
@@ -83,23 +91,23 @@ public class Category {
         return categories;
     }
 
-    
     public static ArrayList<Category> getWalletCategories(User owner, Wallet wallet) {
         ArrayList<Category> categories = new ArrayList<>();
         ConnectionClass connectionClass = new ConnectionClass();
-        Connection connection=connectionClass.getConnection();
+        Connection connection = connectionClass.getConnection();
 
         try {
-            Statement statement=connection.createStatement();
-            String sql="SELECT t.category_id, c.*, sum(t.amount) as amount FROM transaction as t JOIN category as c ON t.category_id = c.id WHERE c.user_id = "+ owner.getId() + " AND t.wallet_id =" + wallet.getId() + " GROUP BY t.category_id";
-            ResultSet resultSet=statement.executeQuery(sql);
+            Statement statement = connection.createStatement();
+            String sql = "SELECT t.category_id, c.*, sum(t.amount) as amount, COUNT(t.id) as tcount FROM transaction as t JOIN category as c ON t.category_id = c.id WHERE c.user_id = " + owner.getId() + " AND t.wallet_id =" + wallet.getId() + " GROUP BY t.category_id";
+            ResultSet resultSet = statement.executeQuery(sql);
 
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 categories.add(new Category(
                         resultSet.getInt("id"),
                         resultSet.getString("name"),
                         resultSet.getString("type"),
                         resultSet.getDouble("amount"),
+                        resultSet.getInt("tcount"),
                         owner));
             }
         } catch (SQLException e) {
@@ -108,7 +116,6 @@ public class Category {
         return categories;
     }
 
-    
     public static void createCategory(String name, String type, User owner) {
         ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = connectionClass.getConnection();

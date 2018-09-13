@@ -32,6 +32,63 @@ public class Transaction {
         this.wallet = wallet;
         this.description = description;
     }
+    
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Wallet getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(Wallet wallet) {
+        this.wallet = wallet;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
 
     public static ArrayList<Transaction> getTransactions(Category category, Wallet wallet) {
         ArrayList<Transaction> transactions = new ArrayList<>();
@@ -40,10 +97,10 @@ public class Transaction {
 
         try {
             Statement statement=connection.createStatement();
-            String sql="SELECT * FROM transaction WHERE category_id = '" + category.getId() + "'";
+            String sql="SELECT * FROM transaction WHERE category_id = " + category.getId() + " AND wallet_id = " + wallet.getId() + ";" ;
             ResultSet resultSet=statement.executeQuery(sql);
 
-            if (resultSet.next()){
+            while (resultSet.next()){
                 transactions.add(new Transaction(
                         resultSet.getInt("id"),
                         resultSet.getDouble("amount"),

@@ -40,6 +40,10 @@ public class Wallet {
         return balance;
     }
     
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+    
     public static ArrayList<Wallet> getAccountWallets(User user) {
         ArrayList<Wallet> wallets = new ArrayList<>();
         ConnectionClass connectionClass = new ConnectionClass();
