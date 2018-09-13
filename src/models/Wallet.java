@@ -39,10 +39,10 @@ public class Wallet {
 
         try {
             Statement statement=connection.createStatement();
-            String sql="SELECT * FROM wallet WHERE user_id = '" + user.getId() + "'";
+            String sql="SELECT * FROM wallet WHERE user_id = " + user.getId() + "";
             ResultSet resultSet=statement.executeQuery(sql);
 
-            if (resultSet.next()){
+            while (resultSet.next()){
                 wallets.add(new Wallet(resultSet.getInt("id"), resultSet.getString("name"), user, resultSet.getDouble("balance")));
             }
         } catch (SQLException e) {

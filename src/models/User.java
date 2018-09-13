@@ -64,8 +64,8 @@ public class User implements Model {
     }
 
     public static void register(String name, String email, String password) {
-        ConnectionClass connectionClass=new ConnectionClass();
-        Connection connection=connectionClass.getConnection();
+        ConnectionClass connectionClass = new ConnectionClass();
+        Connection connection = connectionClass.getConnection();
         String password_hash = User.getPasswordHash(password);
 
         try {
